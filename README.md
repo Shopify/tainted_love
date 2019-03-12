@@ -19,7 +19,7 @@ Or install it yourself as:
 
 
 ## Usage
-TaintedLove is enabled in your project
+Enable TaintedLove in your project
 
 ```ruby
 TaintedLove.enable! do |config|
@@ -35,7 +35,7 @@ TaintedLove.enable! do |config|
 end
 ```
 
-Start your application! The default reporter will output into the console. 
+Start your application! The default reporter will output into the console.
 
 ## Development
 

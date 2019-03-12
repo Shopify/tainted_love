@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe(TaintedLove::Utils) do
   include TaintedLove::Utils
 

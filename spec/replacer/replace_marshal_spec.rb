@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe(TaintedLove::Replacer::ReplaceMarshal) do
   it "replaces Marshal.load" do
     expect(TaintedLove).to(receive(:report).once)

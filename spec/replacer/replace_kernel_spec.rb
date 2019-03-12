@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe(TaintedLove::Replacer::ReplaceKernel) do
   it "replaces eval" do
     expect(TaintedLove).to(receive(:report).once)

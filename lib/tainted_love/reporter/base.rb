@@ -2,16 +2,18 @@
 
 require 'set'
 
-module TaintedLove::Reporter
-  class Base
-    attr_reader :warnings
+module TaintedLove
+  module Reporter
+    class Base
+      attr_reader :warnings
 
-    def initialize
-      @warnings = Hash.new { |h, k| h[k] = Set.new }
-    end
+      def initialize
+        @warnings = Hash.new { |h, k| h[k] = Set.new }
+      end
 
-    def store_warning(warning)
-      @warnings[warning.stack_trace.trace_hash] << warning
+      def store_warning(warning)
+        @warnings[warning.stack_trace.trace_hash] << warning
+      end
     end
   end
 end

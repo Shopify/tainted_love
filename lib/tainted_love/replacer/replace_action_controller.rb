@@ -12,12 +12,18 @@ module TaintedLove
           unless args.empty?
             f = args.first
 
-            if f.is_a?(Hash) && f.key?(:inline) && f[:inline].tainted?
-              TainterLove.report(:ReplaceActionController, f[:inline])
+            if f.is_a?(Hash)
+              if f.key?(:inline) && f[:inline].tainted?
+                TaintedLove.report(:ReplaceActionController, f[:inline])
+              end
+
+              if f.key?(:file) && f[:file].tainted?
+                TaintedLove.report(:ReplaceActionController, f[:file])
+              end
             end
 
             if f.is_a?(String) && f.tainted?
-              TainterLove.report(:ReplaceActionController, f)
+              TaintedLove.report(:ReplaceActionController, f)
             end
           end
         end

@@ -38,7 +38,7 @@ module TaintedLove
         validator.new.remove?(warning)
       end
 
-      @configuration.reporter.add_warning(warning) if should_remove
+      @configuration.reporter.add_warning(warning) unless should_remove
     end
   end
 end

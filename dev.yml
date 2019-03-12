@@ -7,6 +7,8 @@ up:
     - openssl
   - ruby: 2.5.3
   - bundler
+  - bundler:
+      gemfile: example/Gemfile
 
 commands:
   console:
@@ -14,7 +16,7 @@ commands:
     run:    bin/console
   test:
     desc:   'run the tests'
-    run:    bin/tests
+    run:    bin/test
 
   docs:
     desc:   'generate the documentation'

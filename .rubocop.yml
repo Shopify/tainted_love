@@ -533,9 +533,6 @@ Metrics/ParameterLists:
   Max: 5
   CountKeywordArgs: false
 
-Metrics/LineLength:
-  Max: 100
-
 Layout/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:

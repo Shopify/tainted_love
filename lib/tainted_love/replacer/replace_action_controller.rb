@@ -8,6 +8,10 @@ module TaintedLove
       end
 
       def replace!
+        TaintedLove.proxy_method(ActionController::Instrumentation, :send_file) do |_, *args|
+          TaintedLove.report(:ReplaceActionController, args.first) if args.first.tainted?
+        end
+
         TaintedLove.proxy_method(ActionController::Instrumentation, :render) do |_, *args|
           unless args.empty?
             f = args.first

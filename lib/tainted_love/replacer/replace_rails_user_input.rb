@@ -20,7 +20,6 @@ module TaintedLove
           attributes.values.map(&:taint)
         end
 
-        # taint params
         ActionController::Base.class_eval do
           before_action :taint_params
           before_action :taint_cookies

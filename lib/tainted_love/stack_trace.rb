@@ -21,7 +21,8 @@ module TaintedLove
     end
 
     def trace_hash
-      TaintedLove.hash(@stack_trace.join(','))
+      lines = @lines.map { |line| "#{line[:file]}:#{line[:number]}" }.join(',')
+      TaintedLove.hash(lines)
     end
   end
 end

@@ -17,6 +17,18 @@ module TaintedLove
             self << value
           end
         end
+
+        TaintedLove.proxy_method(ActionView::Helpers::TagHelper::TagBuilder, :content_tag_string) do |_, *args|
+          # if tag name is tainted
+          if args[0].tainted?
+            return TainterLove.report(:ReplaceActionView, args[0])
+          end
+
+          # if tag content is tainted + html_safe
+          if args[1].tainted? && args[1].html_safe?
+            return TainterLove.report(:ReplaceActionView, args[1])
+          end
+        end
       end
     end
   end

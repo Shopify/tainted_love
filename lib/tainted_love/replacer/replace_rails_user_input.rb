@@ -23,7 +23,10 @@ module TaintedLove
         # taint params
         ActionController::Base.class_eval do
           before_action :taint_params
+          before_action :taint_cookies
 
+
+          private
           def taint_params(value = params)
             if value.is_a?(ActionController::Parameters) || value.is_a?(ActiveSupport::HashWithIndifferentAccess)
               value.values.map(&:taint)
@@ -31,6 +34,10 @@ module TaintedLove
             else
               value.taint
             end
+          end
+
+          def taint_cookies
+            request.cookies.values.each(&:taint)
           end
         end
 

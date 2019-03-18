@@ -28,10 +28,10 @@ module TaintedLove
           private
           def taint_params(value = params)
             if value.is_a?(ActionController::Parameters) || value.is_a?(ActiveSupport::HashWithIndifferentAccess)
-              value.values.map(&:taint)
+              value.values.map { |value| value.taint unless value.frozen? }
               value.values.each { |x| taint_params(x) }
             else
-              value.taint
+              value.taint unless value.frozen?
             end
           end
 

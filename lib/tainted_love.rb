@@ -31,7 +31,7 @@ module TaintedLove
     def report(replacer, tainted_input)
       warning = TaintedLove::Warning.new
       warning.tainted_input = tainted_input
-      warning.stack_trace = TaintedLove::StackTrace.new(Thread.current.backtrace.drop(3))
+      warning.stack_trace = TaintedLove::StackTrace.new(Thread.current.backtrace(3))
       warning.replacer = replacer
 
       should_remove = @configuration.validators.any? do |validator|

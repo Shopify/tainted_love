@@ -16,6 +16,8 @@ module TaintedLove
           method: Regexp.last_match(3),
         }
       end.compact
+
+      @lines.shift if @lines.first[:file]['tainted_love/utils.rb']
     end
 
     def trace_hash

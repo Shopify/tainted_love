@@ -6,18 +6,17 @@ module TaintedLove
       def replace!
         Object.prepend(ObjectMod)
       end
-
     end
 
     module ObjectMod
-      alias :old_send :send
+      alias :_tainted_love_original_send :send
 
       def send(*args, &block)
-        if args.first.tainted?
+        if args[0].tainted? && args[1].tainted?
           TaintedLove.report(:ReplaceObject, args.first)
         end
 
-        old_send(*args, &block)
+        _tainted_love_original_send(*args, &block)
       end
     end
   end

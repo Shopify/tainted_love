@@ -16,10 +16,10 @@ module TaintedLove
         out << "[!] Tainted input found by #{warning.replacer}"
         out << warning.stack_trace.trace_hash
 
-        if warning.tainted_input.size < 100
-          out << warning.tainted_input.inspect
+        out << if warning.tainted_input.size < 100
+          warning.tainted_input.inspect
         else
-          out << warning.tainted_input.inspect[0..100] + '...'
+          warning.tainted_input.inspect[0..100] + '...'
         end
 
         out << warning.stack_trace.lines.take(5)

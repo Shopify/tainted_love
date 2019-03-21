@@ -2,10 +2,10 @@ RSpec.describe(TaintedLove::Replacer::ReplaceObject) do
   it "replaces send" do
     expect(TaintedLove).to(receive(:report).once)
 
-    instance = Class.new {
+    instance = Class.new do
       def methods_missing(*args, &block)
       end
-    }.new
+    end.new
 
     expect(instance).to(receive(:method).exactly(3).times)
 

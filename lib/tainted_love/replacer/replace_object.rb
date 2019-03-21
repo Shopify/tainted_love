@@ -9,7 +9,7 @@ module TaintedLove
     end
 
     module ObjectMod
-      alias :_tainted_love_original_send :send
+      alias_method :_tainted_love_original_send, :send
 
       def send(*args, &block)
         if args[0].tainted? && args[1].tainted?

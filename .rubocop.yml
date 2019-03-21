@@ -1,6 +1,6 @@
 AllCops:
   Exclude:
-  - 'db/schema.rb'
+  - 'example/db/schema.rb'
   DisabledByDefault: true
   StyleGuideBaseURL: https://shopify.github.io/ruby-style-guide/
 
@@ -203,6 +203,9 @@ Style/FrozenStringLiteralComment:
     - when_needed
     - always
     - never
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'example/test/**/*.rb'
 
 Style/GlobalVars:
   AllowedVariables: []
@@ -1146,7 +1149,7 @@ Rails/PluralizationGrammar:
   Enabled: true
 
 Security/Eval:
-  Enabled: true
+  Enabled: false
 
 Security/JSONLoad:
   Enabled: true

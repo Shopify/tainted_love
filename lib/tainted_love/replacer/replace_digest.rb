@@ -17,7 +17,7 @@ module TaintedLove
       end
 
       def create_module(digest_class)
-        module_code = %Q{
+        module_code = %{
         Module.new do
           def hexdigest(value)
             digest = super

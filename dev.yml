@@ -14,6 +14,7 @@ commands:
   console:
     desc:   'start a console'
     run:    bin/console
+
   test:
     desc:   'run the tests'
     run:    bin/test
@@ -21,3 +22,7 @@ commands:
   docs:
     desc:   'generate the documentation'
     run:    bundle exec yard -o docs
+
+  style:
+    desc:   'run rubocop'
+    run:    bundle exec rubocop

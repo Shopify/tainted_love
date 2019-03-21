@@ -24,11 +24,11 @@ module TaintedLove
           before_action :taint_params
           before_action :taint_cookies
 
-
           private
+
           def taint_params(value = params)
             if value.is_a?(ActionController::Parameters) || value.is_a?(ActiveSupport::HashWithIndifferentAccess)
-              value.values.map { |value| value.taint unless value.frozen? }
+              value.values.map { |x| x.taint unless x.frozen? }
               value.values.each { |x| taint_params(x) }
             else
               value.taint unless value.frozen?

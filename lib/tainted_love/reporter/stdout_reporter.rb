@@ -2,10 +2,9 @@
 
 module TaintedLove
   module Reporter
+    # Reporter that outputs warnings in the console
     class StdoutReporter < Base
       def add_warning(warning)
-        store_warning(warning)
-
         puts ''
         puts format_warning(warning)
         puts ''

@@ -4,8 +4,15 @@ require 'digest/md5'
 
 module TaintedLove
   module Utils
-    # Replaces a method defined in klass. If =replace_return_value= is true,
-    # the method will return what the given block returns.
+    # Replaces a method defined in klass.
+    #
+    #
+    # @param klass [Class] The target class
+    # @param method [Symbol] The method name to replace
+    # @param replace_return_value [Boolean]
+    #   If true, the return value of the function will be the value returned by the block.
+    #   Otherwise, the function will return its original value.
+    # @yield [*args, &block] Block to execute when the function is called
     def proxy_method(klass, method, replace_return_value = false, &block)
       original_method = "_tainted_love_original_#{method}"
 
@@ -32,6 +39,11 @@ module TaintedLove
     # If the object is frozen, the given block will be called with a new object.
     # The caller has the responsability of replacing the frozen object with this
     # new object.
+    #
+    # @param object [Object] Object to add tracking
+    # @param payload [Hash] Data to add to the object
+    # @yield [Object] Invoked with a duplicate unfrozen version of object
+    # @return [Object] Given object or dup of it
     def add_tracking(object, payload = {}, &block)
       frozen = object.frozen?
 
@@ -48,6 +60,10 @@ module TaintedLove
       object
     end
 
+    # Create a hex encoded MD5 hash
+    #
+    # @params str [String] Input string
+    # @returns [String]
     def hash(str)
       h = Digest::MD5.new
       h.update(str)

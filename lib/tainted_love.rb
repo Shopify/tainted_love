@@ -9,6 +9,9 @@ module TaintedLove
     attr_reader :configuration
 
     # Enables TaintedLove. Use a block to configure the TaintedLove::Configuration
+    #
+    # @yield [TaintedLove::Configuration]
+    # @returns [TaintedLove::Configuration]
     def enable!
       configuration = TaintedLove::Configuration.new
 
@@ -26,8 +29,14 @@ module TaintedLove
         replacer = replacer.new
         replacer.replace! if replacer.should_replace?
       end
+
+      configuration
     end
 
+    # Report tainted input
+    #
+    # @param replacer [Symbol] Replacer reporting the issue
+    # @param tainted_input [Object] Tainted object
     def report(replacer, tainted_input)
       warning = TaintedLove::Warning.new
       warning.tainted_input = tainted_input

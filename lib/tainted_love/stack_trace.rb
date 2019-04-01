@@ -21,11 +21,18 @@ module TaintedLove
       @lines.shift if @lines.first[:file]['tainted_love/utils.rb']
     end
 
+    # Produces a hash from the stack trace to identify identical code path
+    #
+    # @return [String]
     def trace_hash
       lines = @lines.map { |line| "#{line[:file]}:#{line[:number]}" }.join(',')
       TaintedLove.hash(lines)
     end
 
+    # Create a new StackTrace object from the current thread backtrace
+    #
+    # @param skip [Integer] number of trace line to skip
+    # @return [TaintedLove::StackTrace]
     def self.current(skip = 2)
       new(Thread.current.backtrace(skip))
     end

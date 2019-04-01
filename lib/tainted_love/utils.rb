@@ -6,14 +6,21 @@ module TaintedLove
   module Utils
     # Replaces a method defined in klass.
     #
-    #
-    # @param klass [Class] The target class
+    # @param klass [Class, String] The target class
     # @param method [Symbol] The method name to replace
     # @param replace_return_value [Boolean]
     #   If true, the return value of the function will be the value returned by the block.
     #   Otherwise, the function will return its original value.
     # @yield [*args, &block] Block to execute when the function is called
     def proxy_method(klass, method, replace_return_value = false, &block)
+      if klass.is_a? String
+        if Object.const_defined?(klass)
+          klass = Object.const_get(klass)
+        else
+          return
+        end
+      end
+
       original_method = "_tainted_love_original_#{method}"
 
       klass.class_eval do

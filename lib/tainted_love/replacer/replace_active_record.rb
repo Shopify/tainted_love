@@ -10,7 +10,7 @@ module TaintedLove
       def replace!
         require 'active_record/relation'
 
-        TaintedLove.proxy_method(ActiveRecord::QueryMethods, :where) do |_, *args|
+        TaintedLove.proxy_method('ActiveRecord::QueryMethods', :where) do |_, *args|
           unless args.empty?
             f = args.first
             if f.is_a?(String) && f.tainted?
@@ -19,7 +19,7 @@ module TaintedLove
           end
         end
 
-        TaintedLove.proxy_method(ActiveRecord::QueryMethods, :select) do |_, *args|
+        TaintedLove.proxy_method('ActiveRecord::QueryMethods', :select) do |_, *args|
           unless args.empty?
             f = args.first
             if f.is_a?(String) && f.tainted?

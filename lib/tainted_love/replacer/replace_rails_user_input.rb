@@ -10,41 +10,45 @@ module TaintedLove
 
       def replace!
         # taint headers
-        TaintedLove.proxy_method(ActionDispatch::Http::Headers, :[]) do |return_value, *_args|
+        TaintedLove.proxy_method('ActionDispatch::Http::Headers', :[]) do |return_value, *_args|
           return_value.taint
         end
 
         # taint the values loaded from the database
-        ActiveRecord::Base.after_find do
-          attributes.values.each do |value|
-            value.taint unless value.frozen?
-          end
-        end
-
-        ActionController::Base.class_eval do
-          before_action :taint_params
-          before_action :taint_cookies
-
-          private
-
-          def taint_params(value = params)
-            if value.is_a?(ActionController::Parameters) || value.is_a?(ActiveSupport::HashWithIndifferentAccess)
-              value.values.map { |x| x.taint unless x.frozen? }
-              value.values.each { |x| taint_params(x) }
-            else
+        if Object.const_defined?('ActionController::Base')
+          ActiveRecord::Base.after_find do
+            attributes.values.each do |value|
               value.taint unless value.frozen?
             end
           end
 
-          def taint_cookies
-            request.cookies.values.each(&:taint)
+          ActionController::Base.class_eval do
+            before_action :taint_params
+            before_action :taint_cookies
+
+            private
+
+            def taint_params(value = params)
+              if value.is_a?(ActionController::Parameters) || value.is_a?(ActiveSupport::HashWithIndifferentAccess)
+                value.values.map { |x| x.taint unless x.frozen? }
+                value.values.each { |x| taint_params(x) }
+              else
+                value.taint unless value.frozen?
+              end
+            end
+
+            def taint_cookies
+              request.cookies.values.each(&:taint)
+            end
           end
         end
 
         # taint params keys
-        ActionController::Parameters.class_eval do
-          def keys
-            @parameters.keys.map { |key| key.dup.taint }
+        if Object.const_defined?('ActionController::Parameters')
+          ActionController::Parameters.class_eval do
+            def keys
+              @parameters.keys.map { |key| key.dup.taint }
+            end
           end
         end
       end

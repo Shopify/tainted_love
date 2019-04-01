@@ -17,7 +17,12 @@ module TaintedLove
 
         # taint the values loaded from the database
         ActiveRecord::Base.after_find do
-          attributes.values.map(&:taint)
+          attributes.values.each do |value|
+            begin
+              value.taint
+            rescue
+            end
+          end
         end
 
         ActionController::Base.class_eval do

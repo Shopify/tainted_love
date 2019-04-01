@@ -29,6 +29,13 @@ module TaintedLove
       TaintedLove.hash(lines)
     end
 
+    def to_json
+      {
+        lines: @lines,
+        trace_hash: trace_hash,
+      }.to_json
+    end
+
     # Create a new StackTrace object from the current thread backtrace
     #
     # @param skip [Integer] number of trace line to skip

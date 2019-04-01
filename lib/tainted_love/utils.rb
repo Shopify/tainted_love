@@ -13,7 +13,7 @@ module TaintedLove
     #   Otherwise, the function will return its original value.
     # @yield [*args, &block] Block to execute when the function is called
     def proxy_method(klass, method, replace_return_value = false, &block)
-      if klass.is_a? String
+      if klass.is_a?(String)
         if Object.const_defined?(klass)
           klass = Object.const_get(klass)
         else

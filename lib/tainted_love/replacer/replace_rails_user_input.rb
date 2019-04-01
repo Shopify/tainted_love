@@ -15,13 +15,15 @@ module TaintedLove
         end
 
         # taint the values loaded from the database
-        if Object.const_defined?('ActionController::Base')
+        if Object.const_defined?('ActiveRecord::Base')
           ActiveRecord::Base.after_find do
             attributes.values.each do |value|
               value.taint unless value.frozen?
             end
           end
+        end
 
+        if Object.const_defined?('ActionController::Base')
           ActionController::Base.class_eval do
             before_action :taint_params
             before_action :taint_cookies

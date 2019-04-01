@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require 'json'
 
 module TaintedLove
   module Reporter
@@ -17,13 +18,29 @@ module TaintedLove
 
       class App < Sinatra::Base
         def initialize(reporter)
-          @reportrer = reporter
+          @reporter = reporter
 
           super
         end
 
         get '/' do
           'Hello World'
+        end
+
+        get '/warnings.json' do
+          content_type :json
+
+          output = @reporter.warnings.values
+
+          if params[:since]
+            since = params[:since].to_i
+
+            output.keep_if do |warning|
+              warning.reported_at >= since
+            end
+          end
+
+          output.to_json
         end
       end
     end

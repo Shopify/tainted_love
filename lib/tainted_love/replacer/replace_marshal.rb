@@ -4,15 +4,15 @@ module TaintedLove
   module Replacer
     class ReplaceMarshal < Base
       def replace!
-        Marshal.singleton_class.prepend(MarshalMod)
-      end
-    end
+        mod = Module.new do
+          def load(source, proc = nil)
+            TaintedLove.report(:ReplaceMarshal, source) if source.tainted?
 
-    module MarshalMod
-      def load(source, proc = nil)
-        TaintedLove.report(:ReplaceMarshal, source) if source.tainted?
+            super(source, proc)
+          end
+        end
 
-        super(source, proc)
+        Marshal.singleton_class.prepend(mod)
       end
     end
   end

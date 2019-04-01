@@ -28,5 +28,4 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
       Product.count_by_sql("select * from products")
     end
   end
-
 end

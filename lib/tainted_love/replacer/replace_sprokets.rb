@@ -8,17 +8,17 @@ module TaintedLove
       end
 
       def replace!
-        Sprockets::Rails::Helper.prepend(SprocketsHelperMod)
-      end
-    end
+        mod = Module.new do
+          def javascript_include_tag(*sources)
+            super(*sources).untaint
+          end
 
-    module SprocketsHelperMod
-      def javascript_include_tag(*sources)
-        super(*sources).untaint
-      end
+          def stylesheet_link_tag(*sources)
+            super(*sources).untaint
+          end
+        end
 
-      def stylesheet_link_tag(*sources)
-        super(*sources).untaint
+        Sprockets::Rails::Helper.prepend(mod)
       end
     end
   end

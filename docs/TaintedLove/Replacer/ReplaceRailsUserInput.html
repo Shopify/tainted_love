@@ -206,6 +206,7 @@
       <pre class="lines">
 
 
+11
 12
 13
 14
@@ -237,10 +238,17 @@
 40
 41
 42
-43</pre>
+43
+44
+45
+46
+47
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_rails_user_input.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_rails_user_input.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace!'>replace!</span>
   <span class='comment'># taint headers
@@ -250,20 +258,28 @@
 
   <span class='comment'># taint the values loaded from the database
 </span>  <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_after_find'>after_find</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:taint</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_value'>value</span><span class='op'>|</span>
+      <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_taint'>taint</span> <span class='kw'>unless</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_frozen?'>frozen?</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
 
-  <span class='comment'># taint params
-</span>  <span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_class_eval'>class_eval</span> <span class='kw'>do</span>
+  <span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_class_eval'>class_eval</span> <span class='kw'>do</span>
     <span class='id identifier rubyid_before_action'>before_action</span> <span class='symbol'>:taint_params</span>
+    <span class='id identifier rubyid_before_action'>before_action</span> <span class='symbol'>:taint_cookies</span>
+
+    <span class='id identifier rubyid_private'>private</span>
 
     <span class='kw'>def</span> <span class='id identifier rubyid_taint_params'>taint_params</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
       <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Parameters</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>HashWithIndifferentAccess</span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:taint</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_taint'>taint</span> <span class='kw'>unless</span> <span class='id identifier rubyid_x'>x</span><span class='period'>.</span><span class='id identifier rubyid_frozen?'>frozen?</span> <span class='rbrace'>}</span>
         <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span> <span class='id identifier rubyid_taint_params'>taint_params</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
       <span class='kw'>else</span>
-        <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_taint'>taint</span>
+        <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_taint'>taint</span> <span class='kw'>unless</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_frozen?'>frozen?</span>
       <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+    <span class='kw'>def</span> <span class='id identifier rubyid_taint_cookies'>taint_cookies</span>
+      <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_cookies'>cookies</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:taint</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
 
@@ -316,12 +332,12 @@
       <pre class="lines">
 
 
+7
 8
-9
-10</pre>
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_rails_user_input.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_rails_user_input.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_should_replace?'>should_replace?</span>
   <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_const_defined?'>const_defined?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Rails</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -336,7 +352,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Mar 11 16:19:39 2019 by
+  Generated on Mon Apr  1 14:07:46 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.18 (ruby-2.5.3).
 </div>

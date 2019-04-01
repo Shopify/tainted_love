@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: TaintedLove::Replacer::ReplaceSprokets
+  Class: TaintedLove::Replacer::ReplaceDigest
   
     &mdash; Documentation by YARD 0.9.18
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "TaintedLove::Replacer::ReplaceSprokets";
+  pathId = "TaintedLove::Replacer::ReplaceDigest";
   relpath = '../../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../../_index.html">Index (R)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../../TaintedLove.html" title="TaintedLove (module)">TaintedLove</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Replacer.html" title="TaintedLove::Replacer (module)">Replacer</a></span></span>
      &raquo; 
-    <span class="title">ReplaceSprokets</span>
+    <span class="title">ReplaceDigest</span>
   
 </div>
 
@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Class: TaintedLove::Replacer::ReplaceSprokets
+      <div id="content"><h1>Class: TaintedLove::Replacer::ReplaceDigest
   
   
   
@@ -76,7 +76,7 @@
           
             <li class="next"><span class='object_link'><a href="Base.html" title="TaintedLove::Replacer::Base (class)">Base</a></span></li>
           
-            <li class="next">TaintedLove::Replacer::ReplaceSprokets</li>
+            <li class="next">TaintedLove::Replacer::ReplaceDigest</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -96,7 +96,7 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/tainted_love/replacer/replace_sprokets.rb</dd>
+    <dd>lib/tainted_love/replacer/replace_digest.rb</dd>
   </dl>
   
 </div>
@@ -115,6 +115,28 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create_module-instance_method" title="#create_module (instance method)">#<strong>create_module</strong>(digest_class)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -181,7 +203,67 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="replace!-instance_method">
+  <h3 class="signature first" id="create_module-instance_method">
+  
+    #<strong>create_module</strong>(digest_class)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_digest.rb', line 19</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create_module'>create_module</span><span class='lparen'>(</span><span class='id identifier rubyid_digest_class'>digest_class</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_module_code'>module_code</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>%{</span><span class='tstring_content'>
+  Module.new do
+    def hexdigest(value)
+      digest = super
+
+      digest.instance_eval do
+        def tainted_love_origin
+          </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_digest_class'>digest_class</span><span class='embexpr_end'>}</span><span class='tstring_content'>
+        end
+      end
+
+      digest
+    end
+  end
+</span><span class='tstring_end'>}</span></span>
+  <span class='id identifier rubyid_eval'>eval</span><span class='lparen'>(</span><span class='id identifier rubyid_module_code'>module_code</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="replace!-instance_method">
   
     #<strong>replace!</strong>  &#x21d2; <tt>Object</tt> 
   
@@ -197,13 +279,23 @@
 
 10
 11
-12</pre>
+12
+13
+14
+15
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_sprokets.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_digest.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace!'>replace!</span>
-  <span class='const'>Sprockets</span><span class='op'>::</span><span class='const'>Rails</span><span class='op'>::</span><span class='const'>Helper</span><span class='period'>.</span><span class='id identifier rubyid_prepend'>prepend</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="SprocketsHelperMod.html" title="TaintedLove::Replacer::SprocketsHelperMod (module)">SprocketsHelperMod</a></span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_digests'>digests</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:MD5</span><span class='comma'>,</span> <span class='symbol'>:SHA256</span><span class='comma'>,</span> <span class='symbol'>:SHA512</span><span class='comma'>,</span> <span class='symbol'>:SHA2</span><span class='comma'>,</span> <span class='symbol'>:SHA384</span><span class='comma'>,</span> <span class='symbol'>:SHA1</span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_digests'>digests</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_digest'>digest</span><span class='op'>|</span>
+    <span class='id identifier rubyid_mod'>mod</span> <span class='op'>=</span> <span class='const'>Digest</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='id identifier rubyid_digest'>digest</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_extend'>extend</span><span class='lparen'>(</span><span class='id identifier rubyid_create_module'>create_module</span><span class='lparen'>(</span><span class='id identifier rubyid_mod'>mod</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_const_defined?'>const_defined?</span><span class='lparen'>(</span><span class='id identifier rubyid_mod'>mod</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -252,10 +344,10 @@
 8</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_sprokets.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/replacer/replace_digest.rb', line 6</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_should_replace?'>should_replace?</span>
-  <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_const_defined?'>const_defined?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Sprockets</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_const_defined?'>const_defined?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Digest</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>

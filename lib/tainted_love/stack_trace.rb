@@ -17,12 +17,17 @@ module TaintedLove
         }
       end.compact
 
+      # Hack to remove TaintedLove.proxy_method
       @lines.shift if @lines.first[:file]['tainted_love/utils.rb']
     end
 
     def trace_hash
       lines = @lines.map { |line| "#{line[:file]}:#{line[:number]}" }.join(',')
       TaintedLove.hash(lines)
+    end
+
+    def self.current(skip = 2)
+      new(Thread.current.backtrace(skip))
     end
   end
 end

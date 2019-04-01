@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# frozen_string_literal: true
 
 module TaintedLove
   module Replacer
@@ -18,10 +17,7 @@ module TaintedLove
         # taint the values loaded from the database
         ActiveRecord::Base.after_find do
           attributes.values.each do |value|
-            begin
-              value.taint
-            rescue
-            end
+            value.taint unless value.frozen?
           end
         end
 

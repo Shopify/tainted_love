@@ -6,7 +6,7 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
   include TaintedLoveHelpers
 
   test "should get xss" do
-    assert_report(2) do
+    assert_report do
       get test_cases_xss_url(search: '<img src=x oenrror=alert(1)>')
     end
 
@@ -14,7 +14,7 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get unsafe_render" do
-    assert_report(2) do
+    assert_report do
       get test_cases_unsafe_render_url(file: 'xss')
     end
 

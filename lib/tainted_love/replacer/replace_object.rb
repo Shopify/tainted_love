@@ -18,6 +18,10 @@ module TaintedLove
 
         _tainted_love_original_send(*args, &block)
       end
+
+      def tainted_love_tracking
+        @tainted_love_tracking ||= []
+      end
     end
   end
 end

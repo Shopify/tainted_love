@@ -27,6 +27,20 @@ module TaintedLove
             end
           end
         end
+
+        mod = Module.new do
+          [:find_by_sql, :count_by_sql].each do |method|
+            define_method(method) do |*args|
+              if args.first.tainted?
+                TaintedLove.report(:ReplaceActiveRecord, args.first)
+              end
+
+              super(*args)
+            end
+          end
+        end
+
+        ActiveRecord::Base.extend(mod)
       end
     end
   end

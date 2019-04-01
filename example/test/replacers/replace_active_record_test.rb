@@ -14,4 +14,19 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
       Product.select("query")
     end
   end
+
+  test "replaces find_by_sql" do
+    assert_report do
+      Product.find_by_sql("select * from products".taint)
+      Product.find_by_sql("select * from products")
+    end
+  end
+
+  test "replaces count_by_sql" do
+    assert_report do
+      Product.count_by_sql("select * from products".taint)
+      Product.count_by_sql("select * from products")
+    end
+  end
+
 end

@@ -289,13 +289,6 @@ new object.</p>
       <pre class="lines">
 
 
-47
-48
-49
-50
-51
-52
-53
 54
 55
 56
@@ -303,10 +296,17 @@ new object.</p>
 58
 59
 60
-61</pre>
+61
+62
+63
+64
+65
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/utils.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/utils.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_tracking'>add_tracking</span><span class='lparen'>(</span><span class='id identifier rubyid_object'>object</span><span class='comma'>,</span> <span class='id identifier rubyid_payload'>payload</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_frozen'>frozen</span> <span class='op'>=</span> <span class='id identifier rubyid_object'>object</span><span class='period'>.</span><span class='id identifier rubyid_frozen?'>frozen?</span>
@@ -354,14 +354,14 @@ new object.</p>
       <pre class="lines">
 
 
-67
-68
-69
-70
-71</pre>
+74
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/utils.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/utils.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_hash'>hash</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_h'>h</span> <span class='op'>=</span> <span class='const'>Digest</span><span class='op'>::</span><span class='const'>MD5</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -399,7 +399,7 @@ new object.</p>
         <span class='name'>klass</span>
       
       
-        <span class='type'>(<tt>Class</tt>)</span>
+        <span class='type'>(<tt>Class</tt>, <tt>String</tt>)</span>
       
       
       
@@ -472,6 +472,7 @@ block. Otherwise, the function will return its original value.</p>
       <pre class="lines">
 
 
+15
 16
 17
 18
@@ -490,12 +491,27 @@ block. Otherwise, the function will return its original value.</p>
 31
 32
 33
-34</pre>
+34
+35
+36
+37
+38
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/tainted_love/utils.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/tainted_love/utils.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_proxy_method'>proxy_method</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='comma'>,</span> <span class='id identifier rubyid_method'>method</span><span class='comma'>,</span> <span class='id identifier rubyid_replace_return_value'>replace_return_value</span> <span class='op'>=</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_klass'>klass</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_const_defined?'>const_defined?</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_klass'>klass</span> <span class='op'>=</span> <span class='const'>Object</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='id identifier rubyid_klass'>klass</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='kw'>return</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
   <span class='id identifier rubyid_original_method'>original_method</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_tainted_love_original_</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_method'>method</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 
   <span class='id identifier rubyid_klass'>klass</span><span class='period'>.</span><span class='id identifier rubyid_class_eval'>class_eval</span> <span class='kw'>do</span>
@@ -524,7 +540,7 @@ block. Otherwise, the function will return its original value.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Apr  1 14:07:45 2019 by
+  Generated on Tue Apr  2 15:50:34 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.18 (ruby-2.5.3).
 </div>

@@ -29,6 +29,17 @@ module TaintedLove
             return TainterLove.report(:ReplaceActionView, args[1])
           end
         end
+
+        # Untaint the yield of a template
+        mod = Module.new do
+          def render(*args, &block)
+            super(*args) do |*args, &sub_block|
+              block.call(*args, &sub_block).untaint
+            end
+          end
+        end
+
+        ActionView::Template.prepend(mod) if Object.const_defined?('ActionView::Template')
       end
     end
   end

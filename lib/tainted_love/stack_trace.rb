@@ -31,7 +31,6 @@ module TaintedLove
 
     def to_json
       {
-        lines: @lines,
         trace_hash: trace_hash,
       }.to_json
     end

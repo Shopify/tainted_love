@@ -6,7 +6,7 @@ module TaintedLove
   module Replacer
     class Base
       # Determines if the replacer can run in the current context. This would usually check Ruby
-      # version or gem versions to see which methods to replace.
+      # version or gem versions to see which classes and methods to replace.
       def should_replace?
         true
       end

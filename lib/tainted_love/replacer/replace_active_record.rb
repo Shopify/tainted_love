@@ -14,7 +14,7 @@ module TaintedLove
           unless args.empty?
             f = args.first
             if f.is_a?(String) && f.tainted?
-              TaintedLove.report(:ReplaceActiveRecord, f)
+              TaintedLove.report(:ReplaceActiveRecord, f, [:sqli], 'Model.where using tainted string')
             end
           end
         end
@@ -23,7 +23,7 @@ module TaintedLove
           unless args.empty?
             f = args.first
             if f.is_a?(String) && f.tainted?
-              TaintedLove.report(:ReplaceActiveRecord, f)
+              TaintedLove.report(:ReplaceActiveRecord, f, [:sqli], 'Model#select using tainted string')
             end
           end
         end
@@ -32,7 +32,7 @@ module TaintedLove
           [:find_by_sql, :count_by_sql].each do |method|
             define_method(method) do |*args|
               if args.first.tainted?
-                TaintedLove.report(:ReplaceActiveRecord, args.first)
+                TaintedLove.report(:ReplaceActiveRecord, args.first, [:sqli], "Model##{method} using tainted string")
               end
 
               super(*args)

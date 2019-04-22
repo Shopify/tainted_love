@@ -37,11 +37,15 @@ module TaintedLove
     #
     # @param replacer [Symbol] Replacer reporting the issue
     # @param tainted_input [Object] Tainted object
-    def report(replacer, tainted_input)
+    # @param tags [Array<Symbol>] Tags to classify the warning
+    # @param message [String] Message about the warning
+    def report(replacer, tainted_input, tags = [], message = nil)
       warning = TaintedLove::Warning.new
       warning.tainted_input = tainted_input
       warning.stack_trace = TaintedLove::StackTrace.new(Thread.current.backtrace(3))
       warning.replacer = replacer
+      warning.tags = tags
+      warning.message = message
 
       should_remove = @configuration.validators.any? do |validator|
         validator.new.remove?(warning)

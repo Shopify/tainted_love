@@ -11,7 +11,12 @@ module TaintedLove
         ActionView::OutputBuffer.class_eval do
           def append=(value)
             if value.tainted? && value.html_safe?
-              TaintedLove.report(:ReplaceActionView, value)
+              TaintedLove.report(
+                :ReplaceActionView,
+                value,
+                [:xss],
+                'Tainted string is html_safe'
+              )
             end
 
             self << value

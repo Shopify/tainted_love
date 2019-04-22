@@ -10,7 +10,7 @@ module TaintedLove
 
           def read(*args)
             if args.first.tainted?
-              TaintedLove.report(:ReplaceFile, args.first)
+              TaintedLove.report(:ReplaceFile, args.first, [:lfi], 'File read using tainted file name')
 
               _tainted_love_original_read(*args)
             else
@@ -20,7 +20,7 @@ module TaintedLove
 
           def write(*args)
             if args.first.tainted?
-              TaintedLove.report(:ReplaceFile, args.first)
+              TaintedLove.report(:ReplaceFile, args.first, [:lfi], 'File write using tainted file name')
             end
 
             _tainted_love_original_write(*args)

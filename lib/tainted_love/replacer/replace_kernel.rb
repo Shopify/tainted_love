@@ -6,7 +6,11 @@ module TaintedLove
       def replace!
         %i[eval system `].each do |method|
           TaintedLove.proxy_method(Kernel, method) do |_, *args|
-            TaintedLove.report(:ReplaceKernel, args.first) if args.first&.tainted?
+            TaintedLove.report(
+              :ReplaceKernel,
+              args.first,
+              [:rce],
+              'Command execution using tainted input') if args.first&.tainted?
           end
         end
 
@@ -21,7 +25,7 @@ module TaintedLove
               return_value.taint
 
               if first.is_a?(String) && first[0] == '|'
-                TaintedLove.report(:ReplaceKernel, first)
+                TaintedLove.report(:ReplaceKernel, first, [:rce], 'Kernel#open beings with "|" and uses tainted input')
               end
             else
               return_value.untaint

@@ -13,7 +13,7 @@ module TaintedLove
           h[k] = {
             stack_trace: nil,
             replacer: nil,
-            inputs: Set.new,
+            inputs: {},
           }
         end
       end
@@ -24,9 +24,14 @@ module TaintedLove
       def store_warning(warning)
         key = warning.stack_trace.trace_hash
 
-        @warnings[key][:inputs].add([warning.reported_at, warning.tainted_input])
-        @warnings[key][:replacer] = warning.replacer
-        @warnings[key][:stack_trace] = warning.stack_trace.lines
+        @warnings[key].merge!(
+          replacer: warning.replacer,
+          stack_trace: warning.stack_trace.lines,
+          tags: warning.tags,
+          message: warning.message,
+        )
+
+        @warnings[key][:inputs][warning.tainted_input] = warning.reported_at
       end
 
       # Adds a warning to the reporter

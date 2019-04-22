@@ -7,7 +7,7 @@ module TaintedLove
         mod = Module.new do
           def send(*args, &block)
             if args[0].tainted? && args[1].tainted?
-              TaintedLove.report(:ReplaceObject, args.first)
+              TaintedLove.report(:ReplaceObject, args.first, [:rce], 'User input in the first 2 arguments of Object#send')
             end
 
             super(*args, &block)

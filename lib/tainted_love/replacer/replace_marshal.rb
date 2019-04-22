@@ -6,7 +6,7 @@ module TaintedLove
       def replace!
         mod = Module.new do
           def load(source, proc = nil)
-            TaintedLove.report(:ReplaceMarshal, source) if source.tainted?
+            TaintedLove.report(:ReplaceMarshal, source, [:rce], 'Marshal.load using tainted input') if source.tainted?
 
             super(source, proc)
           end

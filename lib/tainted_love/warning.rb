@@ -2,7 +2,7 @@
 
 module TaintedLove
   class Warning
-    attr_accessor :stack_trace, :replacer, :tainted_input, :reported_at
+    attr_accessor :stack_trace, :replacer, :tainted_input, :reported_at, :message, :tags
 
     def initialize
       @reported_at = Time.now.to_i
@@ -22,6 +22,8 @@ module TaintedLove
         replacer: @replacer,
         tainted_input: @tainted_input,
         reported_at: @reported_at,
+        message: @message,
+        tags: @tags
       }.to_json
     end
   end

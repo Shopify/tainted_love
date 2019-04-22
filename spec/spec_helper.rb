@@ -2,6 +2,7 @@
 
 require 'bundler/setup'
 require 'tainted_love'
+require 'yaml'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

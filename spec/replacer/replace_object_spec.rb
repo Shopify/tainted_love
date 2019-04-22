@@ -1,5 +1,5 @@
 RSpec.describe(TaintedLove::Replacer::ReplaceObject) do
-  it "replaces send" do
+  it "reports usage of Objec#send if the first two arguments are tainted" do
     expect(TaintedLove).to(receive(:report).once)
 
     instance = Class.new do

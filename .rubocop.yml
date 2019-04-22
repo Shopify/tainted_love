@@ -1156,6 +1156,8 @@ Security/JSONLoad:
 
 Security/Open:
   Enabled: true
+  Exclude:
+    - spec/**/*
 
 Lint/BigDecimalNew:
   Enabled: true

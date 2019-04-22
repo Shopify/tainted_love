@@ -1,1 +1,10 @@
-<%= params[:search]&.html_safe %>
+<h1>Search</h1>
+
+<form action="?">
+  <input name="search" type="text" value=""/>
+  <input type="submit"/>
+</form>
+
+<% if params[:search] %>
+  You search for "<%= params[:search]&.html_safe %>". 0 results found.
+<% end %>

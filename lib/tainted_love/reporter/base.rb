@@ -14,6 +14,8 @@ module TaintedLove
             stack_trace: nil,
             replacer: nil,
             inputs: {},
+            tags: [],
+            message: nil,
           }
         end
       end

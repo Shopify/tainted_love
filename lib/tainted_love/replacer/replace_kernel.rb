@@ -10,7 +10,8 @@ module TaintedLove
               :ReplaceKernel,
               args.first,
               [:rce],
-              'Command execution using tainted input') if args.first&.tainted?
+              'Command execution using tainted input'
+            ) if args.first&.tainted?
           end
         end
 
@@ -24,9 +25,12 @@ module TaintedLove
             if first.tainted?
               return_value.taint
 
-              if first.is_a?(String) && first[0] == '|'
-                TaintedLove.report(:ReplaceKernel, first, [:rce], 'Kernel#open beings with "|" and uses tainted input')
-              end
+              TaintedLove.report(
+                :ReplaceKernel,
+                first,
+                [:rce],
+                'Kernel#open begins with "|" and uses tainted input'
+              ) if first.is_a?(String) && first[0] == '|'
             else
               return_value.untaint
             end

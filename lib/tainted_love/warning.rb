@@ -23,7 +23,7 @@ module TaintedLove
         tainted_input: @tainted_input,
         reported_at: @reported_at,
         message: @message,
-        tags: @tags
+        tags: @tags,
       }.to_json
     end
   end

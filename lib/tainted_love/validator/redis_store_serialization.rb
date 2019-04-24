@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module TaintedLove
   module Validator
     # Assumes that value unserialized from Redis are safe

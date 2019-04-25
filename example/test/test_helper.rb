@@ -10,7 +10,9 @@ module TaintedLoveHelpers
     mock = Minitest::Mock.new
 
     n.times do
-      mock.expect(:call, nil, [Object, Object])
+      mock.expect(:call, nil) do
+        true
+      end
     end
 
     TaintedLove.stub(:report, mock, &block)

@@ -4,26 +4,46 @@ module TaintedLove
   module Reporter
     # Reporter that outputs warnings in the console
     class StdoutReporter < Base
+      attr_reader :stack_trace_size, :app_path
+
+      def initialize
+        super
+
+        @stack_trace_size = 5
+        @app_path = Dir.pwd
+      end
+
       def add_warning(warning)
-        puts ''
-        puts format_warning(warning)
-        puts ''
+        puts
+        format_warning(warning)
+        puts
       end
 
       def format_warning(warning)
-        out = []
-        out << "[!] Tainted input found by #{warning.replacer}"
-        out << warning.stack_trace.trace_hash
+        puts '[!] TaintedLove'
+        puts "#{warning.stack_trace.trace_hash[0...8]} #{warning.message} [#{warning.tags.join(', ')}]"
 
-        out << if warning.tainted_input.size < 100
+        tainted_input = if warning.tainted_input.size < 100
           warning.tainted_input.inspect
         else
           warning.tainted_input.inspect[0..100] + '...'
         end
 
-        out << warning.stack_trace.lines.take(5)
+        puts 'Tainted input: ' + tainted_input
 
-        out.join("\n")
+        warning.stack_trace.lines.take(@stack_trace_size).each do |line|
+          puts format_line(line)
+
+          next unless line[:file].starts_with?(@app_path)
+
+          File.read(line[:file]).lines.each_with_index.drop(line[:line_number] - 2).take(3).each do |(code, n)|
+            puts "| #{n}\t#{code}"
+          end
+        end
+      end
+
+      def format_line(line)
+        line[:file].sub(Dir.pwd, '.') + ':' + line[:line_number].to_s + ' in ' + line[:method]
       end
     end
   end

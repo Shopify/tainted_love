@@ -8,10 +8,9 @@ module TaintedLove
     class FileReporter < Base
       attr_reader :file_path
 
-      def initialize
-        super
-
-        @file_path = '/tmp/tainted_love.json'
+      def initialize(file_path = '/tmp/tainted_love.json')
+        super()
+        @file_path = file_path
       end
 
       def add_warning(warning)

@@ -28,7 +28,7 @@ module TaintedLove
           def render(*args, &block)
             super(*args) do |*sub_args, &sub_block|
               block.call(*sub_args, &sub_block).untaint
-            end
+            end.untaint
           end
         end
 

@@ -1,0 +1,3 @@
+<% @warnings.each do |warning|%>
+  <%= erb :warning, layout: false, locals: { warning: warning } %>
+<% end %>

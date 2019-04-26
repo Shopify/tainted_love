@@ -1,0 +1,57 @@
+<div id="warnings">
+  <% @warnings.each do |trace_hash, warning| %>
+    <div class="warning">
+      <h2>
+        <%= trace_hash[0...8] %>
+        -
+        <%= warning['message'] %>
+      </h2>
+
+      <div class="details">
+        <p class="stack_trace">
+          <% warning['stack_trace'].take(5).each do |line| %>
+            <%= erb :line, locals: { line: line }  %>
+          <% end %>
+
+          <details>
+            <summary>Show more</summary>
+
+            <% warning['stack_trace'].drop(5).each do |line| %>
+              <%= erb :line, locals: { line: line }  %>
+            <% end %>
+          </details>
+        </p>
+        <hr/>
+        <p class="inputs">
+          <% inputs = prepare_inputs(warning) %>
+
+          <% inputs.take(5).each do |(input, reported_at)|  %>
+            <div class="input">
+              <code><%=h input.inspect %></code>
+              <small>reported at <%= Time.at(reported_at) %></small>
+            </div>
+          <% end %>
+
+          <% if inputs.size > 5 %>
+            <details>
+              <summary>Show more</summary>
+
+              <% inputs.drop(5).each do |(input, reported_at)|  %>
+                <div class="input">
+                  <code><%=h input.inspect %></code>
+                  <small>reported at <%= Time.at(reported_at) %></small>
+                </div>
+              <% end %>
+            </details>
+          <% end %>
+        </p>
+
+        <div>
+          <% warning['tags'].each do |tag| %>
+            <span class="tag">#<%= tag %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

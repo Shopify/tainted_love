@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>TaintedLove</title>
+    <link href="application.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <nav>
+      <h1>TaintedLove</h1>
+      <ul>
+        <li><%= @warnings.size %> warnings</li>
+        <li><a href="?">Refresh</a></li>
+      </ul>
+
+      <div class="clear"></div>
+    </nav>
+
+    <div id="wrapper">
+      <%= yield %>
+    </div>
+
+    <script src="application.js"></script>
+  </body>
+</html>

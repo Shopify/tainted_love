@@ -6,6 +6,10 @@
 
 TaintedLove is a dynamic security analysis tool for Ruby. It leverages Ruby's object tainting and monkey patching features to identify vulnerable code paths at runtime.
 
+- [Getting Started](https://github.com/Shopify/tainted_love/wiki/Getting-Started)
+- [Wiki](https://github.com/Shopify/tainted_love/wiki)
+- [API documentation](https://www.rubydoc.info/gems/tainted_love/)
+
 ## Installation
 
 Add this line to your application's Gemfile:

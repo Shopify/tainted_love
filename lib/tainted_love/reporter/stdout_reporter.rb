@@ -36,8 +36,8 @@ module TaintedLove
 
           next unless line[:file].starts_with?(@app_path)
 
-          File.read(line[:file]).lines.each_with_index.drop(line[:line_number] - 2).take(3).each do |(code, n)|
-            puts "| #{n}\t#{code}"
+          File.read(line[:file]).lines.each_with_index.drop([0, line[:line_number] - 2].max).take(3).each do |(code, n)|
+            puts "| #{n + 1}\t#{code}"
           end
         end
       end

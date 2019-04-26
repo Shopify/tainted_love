@@ -64,3 +64,16 @@ h2 {
 details summary {
     font-size: 0.8em;
 }
+
+.code {
+    padding-left: 1em;
+}
+
+.code pre {
+    margin: 0;
+}
+
+.code pre:before {
+    content: attr(data-line);
+    margin-right: 1em;
+}

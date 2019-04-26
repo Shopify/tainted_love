@@ -20,7 +20,12 @@ module TaintedLove
       end
 
       def update_file
-        File.write(@file_path, @warnings.to_json)
+        report = {
+          'warnings': @warnings,
+          'application_path': Dir.pwd
+        }
+
+        File.write(@file_path, report.to_json)
       end
     end
   end

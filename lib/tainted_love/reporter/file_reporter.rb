@@ -22,7 +22,7 @@ module TaintedLove
       def update_file
         report = {
           'warnings': @warnings,
-          'application_path': Dir.pwd
+          'application_path': Dir.pwd,
         }
 
         File.write(@file_path, report.to_json)

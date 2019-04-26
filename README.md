@@ -1,3 +1,7 @@
+![License](https://img.shields.io/github/license/shopify/tainted_love.svg)
+![Version](https://img.shields.io/gem/v/tainted_love.svg)
+
+
 # TaintedLove
 
 TaintedLove is a dynamic security analysis tool for Ruby. It leverages Ruby's object tainting and monkey patching features to identify vulnerable code paths at runtime.

@@ -9,4 +9,5 @@
 
 # rspec failure tracking
 .rspec_status
-notes.org/docs
+notes.org
+/docs

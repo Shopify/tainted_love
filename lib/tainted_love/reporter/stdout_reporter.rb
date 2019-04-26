@@ -4,7 +4,7 @@ module TaintedLove
   module Reporter
     # Reporter that outputs warnings in the console
     class StdoutReporter < Base
-      attr_reader :stack_trace_size, :app_path
+      attr_accessor :stack_trace_size, :app_path
 
       def initialize
         super

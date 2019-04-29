@@ -34,7 +34,7 @@ module TaintedLove
         warning.stack_trace.lines.take(@stack_trace_size).each do |line|
           puts format_line(line)
 
-          next unless line[:file].starts_with?(@app_path)
+          next unless line[:file].start_with?(@app_path)
 
           File.read(line[:file]).lines.each_with_index.drop([0, line[:line_number] - 2].max).take(3).each do |(code, n)|
             puts "| #{n + 1}\t#{code}"

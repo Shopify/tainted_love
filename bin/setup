@@ -5,6 +5,6 @@ set -vx
 
 bundle install
 
-cd example
-
-bundle install
+for path in tests/*/Gemfile; do
+    bundle install --gemfile=$path
+done

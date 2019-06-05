@@ -1,0 +1,29 @@
+PATH
+  remote: ../..
+  specs:
+    tainted_love (0.1.5)
+
+GEM
+  specs:
+    erubis (2.7.0)
+    mustermann (1.0.3)
+    rack (2.0.7)
+    rack-protection (2.0.5)
+      rack
+    sinatra (2.0.5)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.5)
+      tilt (~> 2.0)
+    tilt (2.0.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  erubis
+  sinatra
+  tainted_love!
+
+BUNDLED WITH
+   1.17.3

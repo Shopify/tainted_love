@@ -3,5 +3,9 @@
 set -e
 
 bundle exec rake
-cd example
-rails test
+
+for path in tests/*; do
+    cd $path
+    ./test.sh
+    cd ../..
+done

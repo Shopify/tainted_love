@@ -38,6 +38,17 @@ module TaintedLove
               super(*args)
             end
           end
+
+          # Removes taint on string have been sanitized, unless the first argument is tainted
+          def sanitize_sql_array(ary)
+            return_value = super(ary)
+
+            if ary.first.tainted?
+              return_value.taint
+            end
+
+            return_value
+          end
         end
 
         ActiveRecord::Base.extend(mod)

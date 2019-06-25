@@ -48,7 +48,7 @@ module TaintedLove
       warning.message = message
 
       should_remove = @configuration.validators.any? do |validator|
-        validator.new.remove?(warning)
+        validator.new.remove?(warning) == true
       end
 
       @configuration.reporter.add_warning(warning) unless should_remove

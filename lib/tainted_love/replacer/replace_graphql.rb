@@ -15,6 +15,10 @@ module TaintedLove
             return @value if default_used?
 
             @tainted_value ||= @value.dup.taint
+
+            TaintedLove.tag(@tainted_value, { source: "GraphQL input #{key}" })
+
+            @tainted_value
           end
         end
       end

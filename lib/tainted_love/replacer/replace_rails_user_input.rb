@@ -9,7 +9,7 @@ module TaintedLove
       end
 
       def replace!
-        # taint headers
+
         TaintedLove.proxy_method('ActionDispatch::Http::Headers', :[]) do |return_value, *_args|
           return_value.taint
         end
@@ -18,29 +18,9 @@ module TaintedLove
         if Object.const_defined?('ActiveRecord::Base')
           ActiveRecord::Base.after_find do
             attributes.values.each do |value|
-              value.taint unless value.frozen?
-            end
-          end
-        end
-
-        if Object.const_defined?('ActionController::Base')
-          ActionController::Base.class_eval do
-            before_action :taint_params
-            before_action :taint_cookies
-
-            private
-
-            def taint_params(value = params)
-              if value.is_a?(ActionController::Parameters) || value.is_a?(ActiveSupport::HashWithIndifferentAccess)
-                value.values.map { |x| x.taint unless x.frozen? }
-                value.values.each { |x| taint_params(x) }
-              else
-                value.taint unless value.frozen?
+              unless value.frozen?
+                TaintedLove.tag(value.taint)
               end
-            end
-
-            def taint_cookies
-              request.cookies.values.each(&:taint)
             end
           end
         end
@@ -49,7 +29,9 @@ module TaintedLove
         if Object.const_defined?('ActionController::Parameters')
           ActionController::Parameters.class_eval do
             def keys
-              @parameters.keys.map { |key| key.dup.taint }
+              @parameters.keys.map { |key|
+                TaintedLove.tag(key.dup.taint, source: "Parameter name #{key.inspect}")
+              }
             end
           end
         end

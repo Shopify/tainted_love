@@ -43,26 +43,11 @@ module TaintedLove
     # Adds information about the object. The information can be about
     # where the object is coming from, validation that has been done on the object, etc.
     #
-    # If the object is frozen, the given block will be called with a new object.
-    # The caller has the responsability of replacing the frozen object with this
-    # new object.
-    #
     # @param object [Object] Object to add tracking
     # @param payload [Hash] Data to add to the object
-    # @yield [Object] Invoked with a duplicate unfrozen version of object
     # @return [Object] Given object or dup of it
-    def add_tracking(object, payload = {}, &block)
-      frozen = object.frozen?
-
-      return if frozen && block.nil?
-
-      payload[:stacktrace] = StackTrace.current
-
-      object = object.dup if frozen
-
-      object.tainted_love_tracking << payload
-
-      block.call(object) if frozen
+    def tag(object, payload = {})
+      object.tainted_love_tags << payload
 
       object
     end

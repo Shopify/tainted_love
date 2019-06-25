@@ -3,6 +3,8 @@
 module TaintedLove
   module Replacer
     class ReplaceObject < Base
+      TAGS = {}
+
       def replace!
         mod = Module.new do
           def send(*args, &block)
@@ -18,8 +20,12 @@ module TaintedLove
             super(*args, &block)
           end
 
-          def tainted_love_tracking
-            @tainted_love_tracking ||= []
+          def tainted_love_tags
+            TAGS[object_id] ||= []
+          end
+
+          def tainted_love_tags=(tags)
+            TAGS[object_id] = tags
           end
         end
 

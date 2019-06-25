@@ -11,7 +11,7 @@ module TaintedLove
         # Register a middleware that will be the first the receive call and prepare the
         # env to be correctly tainted. This should be enough for all Rack-based apps
         TaintedLove.proxy_method('Rack::Builder', :run) do |_, app, builder|
-          builder.use(TaintedLove::Replacer::ReplaceRackRequest::TaintedLoveRackMiddleware)
+          builder.use(TaintedLove::Replacer::ReplaceRackBuilder::TaintedLoveRackMiddleware)
         end
       end
 

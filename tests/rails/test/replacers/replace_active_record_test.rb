@@ -8,6 +8,27 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
     end
   end
 
+  test "reports when the interpolation string is tainted" do
+    assert_report do
+      Product.where("id = ?".taint, 1)
+      Product.where("id = ?", 1)
+    end
+  end
+
+  test "reports when using find_by" do
+    assert_report do
+      Product.find_by("id".taint)
+      Product.find_by("id")
+    end
+  end
+
+  test "doesn't report when a hash is used with find_by" do
+    assert_report(0) do
+      Product.find_by(id: 1)
+      # Product.find_by(title: "title".taint)
+    end
+  end
+
   test "replaces select" do
     assert_report do
       Product.select("query".taint)

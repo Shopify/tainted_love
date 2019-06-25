@@ -8,7 +8,7 @@ up:
   - ruby: 2.5.3
   - bundler
   - bundler:
-      gemfile: example/Gemfile
+      gemfile: tests/rails/Gemfile
 
 commands:
   console:

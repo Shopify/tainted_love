@@ -23,7 +23,7 @@ module TaintedLove
           unless args.empty?
             f = args.first
             if f.is_a?(String) && f.tainted?
-              TaintedLove.report(:ReplaceActiveRecord, f, [:sqli], 'Model#select using tainted string')
+              TaintedLove.report(:ReplaceActiveRecord, f, [:sqli], 'Model.select using tainted string')
             end
           end
         end
@@ -45,9 +45,9 @@ module TaintedLove
 
             if ary.first.tainted?
               return_value.taint
+            else
+              return_value.untaint
             end
-
-            return_value
           end
         end
 

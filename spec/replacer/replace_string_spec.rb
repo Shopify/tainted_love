@@ -38,5 +38,6 @@ RSpec.describe(TaintedLove::Replacer::ReplaceString) do
     key, value = user_input.split('=')
 
     expect(key.tainted_love_tags.first).to(eq(tag))
+    expect(value.tainted_love_tags.first).to(eq(tag))
   end
 end

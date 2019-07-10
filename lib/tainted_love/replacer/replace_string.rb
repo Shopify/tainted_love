@@ -2,7 +2,7 @@ module TaintedLove
   module Replacer
     class ReplaceString < Base
       WRAP_METHODS = [
-        :+, :*, :[], :[]= , :gsub, :sub, :replace, :strip, :strip!
+        :+, :*, :[], :[]= , :sub, :replace, :strip, :strip!
       ]
 
       def replace!
@@ -25,6 +25,21 @@ module TaintedLove
 
           WRAP_METHODS.each do |sym|
             wrap_call(sym)
+          end
+
+          def gsub(*args, &block)
+            # Context for this hack: https://stackoverflow.com/a/52783055/3349159
+
+            match(args.first)
+
+            unless block.nil?
+              block.binding.tap do |b|
+                b.local_variable_set(:_tainted_love_tilde_variable, $~)
+                b.eval("$~ = _tainted_love_tilde_variable")
+              end
+            end
+
+            super(*args, &block)
           end
 
           def split(*args)

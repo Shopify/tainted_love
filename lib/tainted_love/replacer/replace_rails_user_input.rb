@@ -35,6 +35,10 @@ module TaintedLove
             end
           end
         end
+
+        TaintedLove.proxy_method('ActiveSupport::SafeBuffer', :initialize) do |return_value, str|
+          return_value.tainted_love_tags = str.tainted_love_tags
+        end
       end
     end
   end

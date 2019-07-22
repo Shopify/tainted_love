@@ -1,0 +1,6 @@
+# https://services.shopify.io/services/tainted_love/rubygems
+org_line: 
+owners:
+- Shopify/appsec
+rubygems:
+  classification: library

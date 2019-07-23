@@ -17,9 +17,9 @@ module TaintedLove
         # taint the values loaded from the database
         if Object.const_defined?('ActiveRecord::Base')
           ActiveRecord::Base.after_find do
-            attributes.values.each do |value|
+            attributes.each do |key, value|
               unless value.frozen?
-                TaintedLove.tag(value.taint)
+                TaintedLove.tag(value.taint, source: "ActiveRecord attribute #{self.class.to_s}##{key}")
               end
             end
           end
@@ -36,6 +36,7 @@ module TaintedLove
           end
         end
 
+        # Transfer tags from String to SafeBuffer
         TaintedLove.proxy_method('ActiveSupport::SafeBuffer', :initialize) do |return_value, str|
           return_value.tainted_love_tags = str.tainted_love_tags
         end

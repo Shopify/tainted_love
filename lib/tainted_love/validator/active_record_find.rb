@@ -7,7 +7,7 @@ module TaintedLove
         return unless warning.replacer == :ReplaceActiveRecord
 
         warning.stack_trace.lines.take(2).any? do |line|
-          line[:file]['lib/active_record/core.rb'] && line[:method] == "find"
+          line[:file]['lib/active_record/core.rb'] && line[:method] == 'find'
         end
       end
     end

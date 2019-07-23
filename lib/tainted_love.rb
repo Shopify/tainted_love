@@ -11,7 +11,7 @@ module TaintedLove
     # Enables TaintedLove. Use a block to configure the TaintedLove::Configuration
     #
     # @yield [TaintedLove::Configuration]
-    # @returns [TaintedLove::Configuration]
+    # @return [TaintedLove::Configuration]
     def enable!
       configuration = TaintedLove::Configuration.new
 

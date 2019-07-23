@@ -54,8 +54,8 @@ module TaintedLove
 
     # Create a hex encoded MD5 hash
     #
-    # @params str [String] Input string
-    # @returns [String]
+    # @param str [String] Input string
+    # @return [String]
     def hash(str)
       h = Digest::MD5.new
       h.update(str)

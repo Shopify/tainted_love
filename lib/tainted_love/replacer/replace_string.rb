@@ -2,7 +2,7 @@ module TaintedLove
   module Replacer
     class ReplaceString < Base
       WRAP_METHODS = [
-        :+, :*, :[], :[]= , :sub, :replace, :strip, :strip!
+        :+, :*, :[], :[]= , :sub, :replace, :strip, :strip!, :inspect
       ]
 
       def replace!

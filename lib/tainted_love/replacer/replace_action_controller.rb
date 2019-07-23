@@ -51,10 +51,6 @@ module TaintedLove
             end
           end
         end
-
-        TaintedLove.proxy_method('ActionController::Base', :redirect_to) do |_, *args|
-          TaintedLove.report(:ReplaceActionController, args.first, [:open_redirect]) if args.first.tainted?
-        end
       end
     end
   end

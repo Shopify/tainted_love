@@ -29,14 +29,6 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get unsafe_redirect" do
-    assert_report do
-      get test_cases_unsafe_redirect_url(to: 'http://evil.com'.taint)
-    end
-
-    assert_response :redirect
-  end
-
   test "user input is tainted" do
     # Since there's no actual app running, some values are not tainted
     # by ReplaceRackBuilder

@@ -7,7 +7,7 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get xss" do
     assert_report do
-      get test_cases_xss_url(search: '<img src=x oenrror=alert(1)>')
+      get test_cases_xss_url(search: '<img src=x oenrror=alert(1)>'.taint)
     end
 
     assert_response :success
@@ -15,7 +15,7 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get unsafe_render" do
     assert_report do
-      get test_cases_unsafe_render_url(file: 'xss')
+      get test_cases_unsafe_render_url(file: 'xss'.taint)
     end
 
     assert_response :success
@@ -23,7 +23,7 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get render_inline" do
     assert_report do
-      get test_cases_render_inline_url(template: '<%= `id` %>')
+      get test_cases_render_inline_url(template: '<%= `id` %>'.taint)
     end
 
     assert_response :success
@@ -31,7 +31,7 @@ class TestCasesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get unsafe_redirect" do
     assert_report do
-      get test_cases_unsafe_redirect_url(to: 'http://evil.com')
+      get test_cases_unsafe_redirect_url(to: 'http://evil.com'.taint)
     end
 
     assert_response :redirect

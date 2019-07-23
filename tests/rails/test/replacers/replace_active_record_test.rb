@@ -25,7 +25,7 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
   test "doesn't report when a hash is used with find_by" do
     assert_report(0) do
       Product.find_by(id: 1)
-      # Product.find_by(title: "title".taint)
+      Product.find_by(name: "name".taint)
     end
   end
 

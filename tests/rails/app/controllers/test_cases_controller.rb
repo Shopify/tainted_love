@@ -38,6 +38,6 @@ class TestCasesController < ApplicationController
     tainted = values.values.map(&:tainted?)
     sources = values.values.map(&:tainted_love_tags)
 
-    render json: description.zip(tainted, sources)
+    render json: description.zip(values.values, tainted, sources)
   end
 end

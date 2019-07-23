@@ -15,10 +15,14 @@ module TaintedLove
       #
       # @return [Array<Class>]
       def self.replacers
-        TaintedLove::Replacer.constants.map do |const|
+        replacers = TaintedLove::Replacer.constants.map do |const|
           cls = TaintedLove::Replacer.const_get(const)
           cls if cls.method_defined?(:replace!)
         end.compact
+
+        replacers -= [TaintedLove::Replacer::ReplaceObject]
+
+        [TaintedLove::Replacer::ReplaceObject] + replacers
       end
     end
   end

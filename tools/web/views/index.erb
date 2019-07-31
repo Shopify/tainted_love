@@ -25,22 +25,16 @@
         <p class="inputs">
           <% inputs = prepare_inputs(warning) %>
 
-          <% inputs.take(5).each do |(input, reported_at)|  %>
-            <div class="input">
-              <code><%=h input.inspect %></code>
-              <small>reported at <%= Time.at(reported_at) %></small>
-            </div>
+          <% inputs.take(5).each do |(value, input)|  %>
+            <%= erb :input, locals: { value: value, input: input } %>
           <% end %>
 
           <% if inputs.size > 5 %>
             <details>
               <summary>Show more</summary>
 
-              <% inputs.drop(5).each do |(input, reported_at)|  %>
-                <div class="input">
-                  <code><%=h input.inspect %></code>
-                  <small>reported at <%= Time.at(reported_at) %></small>
-                </div>
+              <% inputs.drop(5).each do |(value, input)|  %>
+                <%= erb :input, locals: { value: value, input: input } %>
               <% end %>
             </details>
           <% end %>
@@ -48,7 +42,7 @@
 
         <div>
           <% warning['tags'].each do |tag| %>
-            <span class="tag">#<%= tag %></span>
+            <span class="tag"><%= tag %></span>
           <% end %>
         </div>
       </div>

@@ -33,7 +33,10 @@ module TaintedLove
           message: warning.message,
         )
 
-        @warnings[key][:inputs][warning.tainted_input] = warning.reported_at
+        @warnings[key][:inputs][warning.tainted_input] = {
+          reported_at: warning.reported_at,
+          taint_tags: warning.tainted_input.tainted_love_tags.uniq
+        }
       end
 
       # Adds a warning to the reporter

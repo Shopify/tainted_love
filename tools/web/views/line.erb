@@ -3,9 +3,9 @@
     <%= line['file'].sub(@report['application_path'], '.') %></a><span>:<%= line['line_number'] %></span> in <%= line['method'] %>
   <% if line['file'].start_with?(@report['application_path']) %>
     <div class="code">
-    <% render_source(line['file'], line['line_number']).each do |(code, line_number)| %>
+        <% render_source(line['file'], line['line_number']).each do |(code, line_number)| %>
       <pre data-line="<%= line_number %>"><%= code %></pre>
-    <% end %>
+        <% end %>
     </div>
   <% end %>
 </div>

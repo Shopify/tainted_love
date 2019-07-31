@@ -17,7 +17,22 @@ end
 
 helpers do
   def prepare_inputs(warning)
-    warning['inputs'].sort_by { |_, reported_at| -reported_at }
+    warning['inputs'].sort_by { |value, input| -input['reported_at'] }
+  end
+
+  def highlight_input(input, tag)
+    return input[0...100] unless tag
+
+    value = tag['value']
+    source = tag['source']
+
+    input = input.gsub(value) { |match|
+      '[TAINTED_LOVE_MATCH_START]' + match + '[TAINTED_LOVE_MATCH_END]'
+    }
+
+    h(input)
+      .gsub('[TAINTED_LOVE_MATCH_START]', '<span data-title="' + h(source) + '">')
+      .gsub('[TAINTED_LOVE_MATCH_END]', '</span>')
   end
 
   def h(text)
@@ -32,7 +47,7 @@ end
 get '/' do
   @report = JSON.parse(File.read(REPORT_PATH))
   @warnings = @report['warnings'].sort_by do |_, code_path|
-    -code_path['inputs'].map { |_, reported_at| reported_at }.max
+    -code_path['inputs'].map { |value, input| input['reported_at'] }.max
   end.to_h
 
   erb :index

@@ -55,10 +55,16 @@ h2 {
     font-family: monospace;
 }
 
+
 .tag {
     font-size: 0.8em;
-    background-color: #9EBABA;
-    padding: 0.1em 0.3em;
+    padding: 0.2em 0.5em;
+    border-radius: 5px;
+    border: 2px solid #9EBABA;
+}
+
+.tag:before {
+    content: '#';
 }
 
 details summary {
@@ -76,4 +82,29 @@ details summary {
 .code pre:before {
     content: attr(data-line);
     margin-right: 1em;
+}
+
+code span {
+    border-bottom: 2px solid rgba(255, 0, 0, 0.8);
+}
+
+
+code span[data-title] {
+  position: relative;
+  cursor: help;
+}
+
+code span[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  z-index: 10000;
+  bottom: -26px;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 0.8em;
+  font-family: sans-serif;
+  white-space: nowrap;
 }

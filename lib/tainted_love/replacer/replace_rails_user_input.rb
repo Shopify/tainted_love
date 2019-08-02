@@ -10,19 +10,17 @@ module TaintedLove
 
       def replace!
 
-        TaintedLove.proxy_method('ActionDispatch::Http::Headers', :[]) do |return_value, *_args|
-          return_value.taint
-        end
-
         # taint the values loaded from the database
         if Object.const_defined?('ActiveRecord::Base')
           ActiveRecord::Base.after_find do
             attributes.each do |key, value|
-              unless value.frozen?
-                TaintedLove.tag(value.taint, source: "ActiveRecord attribute #{self.class.to_s}##{key}")
-              end
+              TaintedLove.tag(value.taint, source: "ActiveRecord attribute #{self.class.to_s}##{key}", value: value)
             end
           end
+        end
+
+        TaintedLove.proxy_method('ActionDispatch::Http::Headers', :[]) do |return_value, *args|
+          TaintedLove.tag(return_value.taint, source: "headers[#{args.first.inspect}]", value: return_value)
         end
 
         # taint params keys
@@ -30,7 +28,7 @@ module TaintedLove
           ActionController::Parameters.class_eval do
             def keys
               @parameters.keys.map { |key|
-                TaintedLove.tag(key.dup.taint, source: "Parameter name #{key.inspect}")
+                TaintedLove.tag(key.dup.taint, source: "Parameter name #{key.inspect}", value: key)
               }
             end
           end

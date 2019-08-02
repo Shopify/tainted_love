@@ -32,8 +32,8 @@ module TaintedLove
             new_key = key.dup.taint
             new_value = env[key].dup.taint
 
-            TaintedLove.tag(new_key, source: "Key #{key.inspect} Rack env")
-            TaintedLove.tag(new_value, source: "Rack env[#{key.inspect}]")
+            TaintedLove.tag(new_key, source: "Key #{key.inspect} Rack env", value: new_key)
+            TaintedLove.tag(new_value, source: "Rack env[#{key.inspect}]", value: new_value)
 
             values[new_key] = new_value
 

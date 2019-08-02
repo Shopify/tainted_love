@@ -13,13 +13,21 @@ module TaintedLove
 
       def taint_params(return_value, *args)
         # Assume that if tainted input uses this method, it's to parse a query string
+        # It can also be cookies that are being parsed.
         return unless args.first.tainted?
 
+        # figure out what is being parsed from the the method that called it
+        name = if Thread.current.backtrace(4).first["`parse_cookies_header'"]
+          'cookies'
+        else
+          'params'
+        end
+
         taint = lambda do |params, path|
-          source = "params" + path.map { |p| "[#{p.inspect}]" }.join
+          source = name + path.map { |p| "[#{p.inspect}]" }.join
 
           if params.is_a?(String)
-            TaintedLove.tag(params.taint, source: source)
+            TaintedLove.tag(params.taint, source: source, value: params)
           end
 
           if params.is_a?(Array)

@@ -4,7 +4,7 @@ module TaintedLove
   module Replacer
     class ReplaceGraphQL < Base
       def should_replace?
-        Gem.loaded_specs.has_key?('graphql')
+        Gem.loaded_specs.has_key?('graphql') # fixme: very bundler specific
       end
 
       def replace!
@@ -16,7 +16,7 @@ module TaintedLove
 
             @tainted_value ||= @value.dup.taint
 
-            TaintedLove.tag(@tainted_value, { source: "GraphQL input #{key}" })
+            TaintedLove.tag(@tainted_value, { source: "GraphQL argument #{key.inspect}", value: @tainted_value })
 
             @tainted_value
           end

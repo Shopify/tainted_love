@@ -10,7 +10,7 @@ module TaintedLove
               :ReplaceKernel,
               args.first,
               [:rce],
-              'Command execution using tainted input'
+              "Kernel##{method} execution using tainted input"
             ) if args.first&.tainted?
           end
         end

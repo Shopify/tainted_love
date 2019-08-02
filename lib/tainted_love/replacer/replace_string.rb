@@ -39,7 +39,14 @@ module TaintedLove
               end
             end
 
-            super(*args, &block)
+            result = super(*args, &block)
+
+            result.tainted_love_tags += tainted_love_tags if tainted?
+            args.select(&:tainted?).each do |arg|
+              result.tainted_love_tags += arg.tainted_love_tags
+            end
+
+            result
           end
 
           def split(*args)

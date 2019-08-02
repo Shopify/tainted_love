@@ -30,7 +30,7 @@ module TaintedLove
         end
 
         puts 'Tainted input: ' + tainted_input
-        puts 'Taint tags: ' + warning.tainted_input.tainted_love_tags.inspect
+        puts 'Taint tags: ' + warning.tainted_input.tainted_love_tags.uniq.inspect
 
         warning.stack_trace.lines.take(@stack_trace_size).each do |line|
           puts format_line(line)

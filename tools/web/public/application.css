@@ -2,6 +2,7 @@ body {
     font-family: sans-serif;
     margin: 0;
     background-color: #efefef;
+    color: #333;
 }
 
 .clear {
@@ -53,6 +54,10 @@ h2 {
 
 .stack_trace .line {
     font-family: monospace;
+}
+
+.line a {
+    color: #0081d3;
 }
 
 

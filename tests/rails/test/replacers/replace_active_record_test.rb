@@ -49,4 +49,11 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
       Product.count_by_sql("select * from products")
     end
   end
+
+  test "replaces order" do
+    assert_report do
+      Product.order('created_at asc'.taint)
+      Product.order('created_at asc')
+    end
+  end
 end

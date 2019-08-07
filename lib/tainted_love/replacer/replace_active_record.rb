@@ -19,6 +19,15 @@ module TaintedLove
           end
         end
 
+        TaintedLove.proxy_method('ActiveRecord::QueryMethods', :order) do |_, *args|
+          unless args.empty?
+            f = args.first
+            if f.is_a?(String) && f.tainted?
+              TaintedLove.report(:ReplaceActiveRecord, f, [:sqli], 'Model.order using tainted string')
+            end
+          end
+        end
+
         TaintedLove.proxy_method('ActiveRecord::QueryMethods', :select) do |_, *args|
           unless args.empty?
             f = args.first

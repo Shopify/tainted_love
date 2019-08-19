@@ -40,8 +40,12 @@ module TaintedLove
         mod = Module.new do
           [:find_by_sql, :count_by_sql].each do |method|
             define_method(method) do |*args|
-              if args.first.tainted?
-                TaintedLove.report(:ReplaceActiveRecord, args.first, [:sqli], "Model##{method} using tainted string")
+
+              # skip if find_by_sql is coming from find_by because the where monkey-patch will catch it
+              unless Thread.current.backtrace(3).take(1).first["in `find_by'"]
+                if args.first.tainted?
+                  TaintedLove.report(:ReplaceActiveRecord, args.first, [:sqli], "Model##{method} using tainted string")
+                end
               end
 
               super(*args)

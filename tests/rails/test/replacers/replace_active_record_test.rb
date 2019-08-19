@@ -12,6 +12,11 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
     assert_report do
       Product.where("id = ?".taint, 1)
       Product.where("id = ?", 1)
+
+      # these should not report
+      Product.where(id: 1)
+      Product.where(id: "1")
+      Product.where(id: "1".taint)
     end
   end
 
@@ -23,9 +28,10 @@ class ReplaceActiveRecordTest < ActiveSupport::TestCase
   end
 
   test "doesn't report when a hash is used with find_by" do
-    assert_report(0) do
+    assert_report do
       Product.find_by(id: 1)
       Product.find_by(name: "name".taint)
+      Product.find_by("name".taint) # this should report
     end
   end
 

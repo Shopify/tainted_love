@@ -22,7 +22,7 @@ RSpec.describe(TaintedLove::Replacer::ReplaceString) do
     tag = { source: "params[:user_input]" }
     user_input = TaintedLove.tag("         name   ".taint, tag)
 
-    user_input = user_input.sub('n', 'N')
+    user_input = user_input * 2
     user_input.strip!
 
     user_input += " asdf"

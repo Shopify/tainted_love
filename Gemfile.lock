@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tainted_love (0.4.0)
+    tainted_love (0.4.1)
 
 GEM
   remote: https://rubygems.org/

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'tainted_love/replacer/base'
+require 'tainted_love/validator/base'
+require 'tainted_love/reporter/base'
 Dir[File.dirname(__FILE__) + '/tainted_love/**/*.rb'].each { |f| require f }
 
 module TaintedLove
